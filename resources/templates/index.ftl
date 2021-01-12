@@ -7,21 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/spectre.min.css">
-    <link rel="stylesheet" href="/static/css/spectre-exp.min.css">
-    <link rel="stylesheet" href="/static/css/spectre-icons.min.css">
-    <script src="/static/js/jsoneditor.min.js"></script>
-    <script>
-        // Set the default CSS theme and icon library globally
-        JSONEditor.defaults.theme = 'spectre';
-        JSONEditor.defaults.iconlib = 'spectre';
-    </script>
-    <style>
-        .container {
-            max-width:960px;
-            margin: 0 auto
-        }
-    </style>
 </head>
 <body>
 

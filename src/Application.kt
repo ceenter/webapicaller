@@ -48,7 +48,8 @@ fun Application.module(testing: Boolean = false) {
             call.respond(
                 FreeMarkerContent("jsonConfig.ftl", mapOf(
                     "version" to version,
-                    "data" to IndexData(listOf(1, 2, 3))),
+                    "jsondata" to jsonConfigText
+                ),
                     ""))
         }
 
