@@ -11,6 +11,8 @@
 #
 # docker run -i --rm -p 8080:8080 ktor/ceenter
 #
+# for openshift
+# docker.io/chytrik/ceeredhat:latest
 ###
 FROM adoptopenjdk:11-jre-hotspot
 RUN mkdir /opt/app
