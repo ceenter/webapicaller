@@ -27,6 +27,17 @@
 <div class="content">
     <h1>Settings</h1>
     <hr>
+    <form>
+        <ul class="form-style-6">
+        <input type="checkbox" id="towercall" name="towercall" value="1">
+        <label for="towercall"> Call Tower directly</label><br><br>
+        <label for="toweradm">ansible-tower Admin:</label><br>
+        <input type="text" id="toweradm" name="toweradm"><br>
+        <label for="towerpass">ansible-tower Password:</label><br>
+        <input type="text" id="towerpass" name="towerpass"><br>
+        <input type="submit" value="Save Settings">
+        </ul>
+    </form>
 </div>
 <!-- Content END -->
 

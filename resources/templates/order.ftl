@@ -29,7 +29,7 @@
     <h1>Order</h1>
     <hr>
     <form action="/submit" method="post">
-        <ul class="form-style-8">
+        <ul class="form-style-6">
             <#list formdata as item>
                 <#if item?index == 0>
                     <div class="form-group">
