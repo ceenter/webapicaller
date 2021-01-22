@@ -19,18 +19,25 @@
 <div class="sidebar">
     <a href="/order"> Order </a>
     <a href="/jsonConfig"> JSON Config </a>
-    <a href="/setting"> Settings </a>
+    <a class="active" href="/setting"> Settings </a>
 </div>
 <!-- Navigation bar END -->
 
 <!-- Content START -->
 <div class="content">
-    <h1>Catalog Caller</h1>
+    <h1>Settings</h1>
     <hr>
-    The API Caller is an example GUI which helps generating the proper API syntax. <br>
-    Ultimately it may also execute the API call, but not at this stage yet.<br>
-    The metadata for API Caller is under the api-caller folder.<br>
-    The first file is the menu-map.json where the interactive menu options are defined.<br>
+    <form>
+        <ul class="form-style-2">
+        <input type="checkbox" id="towercall" name="towercall" value="1">
+        <label for="towercall"> Call Tower directly</label><br><br>
+        <label for="toweradm">ansible-tower Admin:</label><br>
+        <input type="text" id="toweradm" name="toweradm"><br>
+        <label for="towerpass">ansible-tower Password:</label><br>
+        <input type="text" id="towerpass" name="towerpass"><br>
+        <input type="submit" value="Save Settings">
+        </ul>
+    </form>
 </div>
 <!-- Content END -->
 

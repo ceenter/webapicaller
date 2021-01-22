@@ -6,11 +6,12 @@ import io.ktor.routing.*
 import freemarker.cache.*
 import io.ktor.freemarker.*
 import com.fasterxml.jackson.databind.*
+import freemarker.core.HTMLOutputFormat
 import io.ktor.jackson.*
 import io.ktor.features.*
 import io.ktor.http.content.*
 
-const val version = "v0.1"
+const val version = "v0.3"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -18,6 +19,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module() {
     install(FreeMarker) {
         templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
+        outputFormat = HTMLOutputFormat.INSTANCE
     }
 
     install(ContentNegotiation) {
@@ -40,22 +42,59 @@ fun Application.module() {
                     ""))
         }
 
+        get("/order") {
+            formEntries.clear()
+            formEntries= mutableListOf(
+                FormEntry(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ))
+            jsonToFormEntry(jsonConfigURL)
+            call.respond(
+                FreeMarkerContent("order.ftl", mapOf(
+                    "version" to version,
+                    "formdata" to formEntries),
+                    ""))
+        }
+
         get("/jsonConfig") {
-            //call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
             call.respond(
                 FreeMarkerContent("jsonConfig.ftl", mapOf(
                     "version" to version,
-                    "jsondata" to jsonConfigText
+                    "jsondataURL" to jsonConfigURL,
                 ),
                     ""))
         }
 
-        get("/dashboard") {
-            //call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+        get("/setting") {
+                    //call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+                    // mapOf(   "name" to roomName, "username" to userSession.name,  "chat" to chatMsgs )
+                    call.respond(
+                        FreeMarkerContent("setting.ftl", mapOf(
+                            "version" to version),
+                            ""))
+                }
+
+        get("/refresh") {
+            formEntries.clear()
+            formEntries= mutableListOf(
+                FormEntry(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ))
+            jsonToFormEntry(jsonConfigURL)
             call.respond(
-                FreeMarkerContent("dashboard.ftl", mapOf(
-                    "version" to version),
-                    ""))
+                // mapOf(   "name" to roomName, "username" to userSession.name,  "chat" to chatMsgs )
+                FreeMarkerContent("refresh.ftl", mapOf("formdata" to formEntries), "")
+            )
         }
 
 
@@ -64,4 +103,6 @@ fun Application.module() {
         }
     }
 }
+
+
 
