@@ -29,10 +29,10 @@ fun jsonToFormEntry(jsonStr:String) {
         // Depending on the value type, a list of values is generated
         when (inputType.toString()) {
             "list" -> {
-                koTableValues = "[' -- select an option -- '"
+                koTableValues = "["
                 if (valueTableJson.size() > 1)
                     for (bIndex in 0 until valueTableJson.size())
-                        koTableValues += ",'${valueTableJson.keySet().elementAt(bIndex)}'"
+                        koTableValues += "'${valueTableJson.keySet().elementAt(bIndex)}',"
                 koTableValues += "]"
             }
             "manual" -> {

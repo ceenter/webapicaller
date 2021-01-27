@@ -12,7 +12,7 @@
 
 <!-- Navigation bar START -->
 <div class="header_image clearfix" style="padding: 2px 15px;color: #f2f2f2;background-color: #292929">
-    <a href="/"><img src="/static/redhatlogo.svg" width="180" height="35"/></a>
+    <a href="/"><img src="/static/redhatlogo.svg" width="180" height="35" alt=""/></a>
     <h2 style = "vertical-align:middle;">CEEnter</h2>
     <p style="float: right">version ${version}</p>
 </div>
@@ -35,14 +35,16 @@
                     <div class="form-group">
                         <label for="${item.options}">${item.label}</label>
                         <select class="form-control" id="${item.options}"
-                                data-bind="options: ${item.options}, value: ${item.value}"></select>
+                                data-bind="options: ${item.options}, optionsCaption: ' -- select an option -- ',
+                                value: ${item.value}"></select>
                     </div>
                 <#else>
                     <#if item.type == "list">
                         <div class="form-group" data-bind="${item.ifdatabind?no_esc}">
                             <label for="${item.options}">${item.label}</label>
                             <select class="form-control" id="${item.options}"
-                                    data-bind="options: ${item.options}, value: ${item.value}"></select>
+                                    data-bind="options: ${item.options}, optionsCaption: ' -- select an option -- ',
+                                    value: ${item.value}"></select>
                         </div>
                     <#else>
                         <div class="form-group" data-bind="${item.ifdatabind?no_esc}">
