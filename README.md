@@ -1,5 +1,5 @@
 # CEEnter API Caller
-
+---
 The API Caller is an example GUI which helps generating the proper API syntax.
 Ultimately it may also execute the API call, but not at this stage yet.
 The metadata for API Caller is under the api-caller folder.
@@ -59,6 +59,6 @@ odo delete --all
 
 
 ## Apache FreeMarker is used to generate HTML
----
+
 URL
 https://freemarker.apache.org/
