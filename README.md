@@ -43,7 +43,8 @@ I use OpenShift Do for quick deployment.
 It is really easy.
 I log in to OpenShift (oc login ...) and create an application and deploy user code on an OpenShift, e.g.
 ```
-odo create java myapp --binary build/libs/ceeredhat-0.0.3-all.jar --s2i
+odo create java ceeredhat --binary build/libs/ceeredhat-0.0.3-all.jar --s2i
+odo url create ceeredhat --port 8080
 odo push
 ```
 
