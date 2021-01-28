@@ -38,7 +38,6 @@ docker run -i --rm -p 8080:8080 chytrik/ceeredhat
 ```
 
 ## ODO
----
 I use OpenShift Do for quick deployment.
 It is really easy.
 I log in to OpenShift (oc login ...) and create an application and deploy user code on an OpenShift, e.g.
