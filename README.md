@@ -37,6 +37,27 @@ To run a local image using the docker engine eg
 docker run -i --rm -p 8080:8080 chytrik/ceeredhat
 ```
 
+## ODO
+---
+I use OpenShift Do for quick deployment.
+It is really easy.
+I log in to OpenShift (oc login ...) and create an application and deploy user code on an OpenShift, e.g.
+```
+odo create java myapp --binary build/libs/ceeredhat-0.0.3-all.jar --s2i
+odo push
+```
+
+Once the application is created, I make changes using only using
+```
+odo push
+```
+
+If necessary, everything can be deleted with
+```
+odo delete --all
+```
+
+
 ## Apache FreeMarker is used to generate HTML
 ---
 URL
