@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/static/css/style.css">
-    <script type='text/javascript' src='/static/js/knockout-3.5.1.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
 
@@ -28,59 +28,122 @@
 <div class="content">
     <h1>Order</h1>
     <hr>
-    <form action="/submit" method="post">
-        <ul class="form-style-6">
-            <#list formdata as item>
-                <#if item?index == 0>
-                    <div class="form-group">
-                        <label for="${item.options}">${item.label}</label>
-                        <select class="form-control" id="${item.options}"
-                                data-bind="options: ${item.options}, optionsCaption: ' -- select an option -- ',
-                                value: ${item.value}"></select>
-                    </div>
-                <#else>
-                    <#if item.type == "list">
-                        <div class="form-group" data-bind="${item.ifdatabind?no_esc}">
-                            <label for="${item.options}">${item.label}</label>
-                            <select class="form-control" id="${item.options}"
-                                    data-bind="options: ${item.options}, optionsCaption: ' -- select an option -- ',
-                                    value: ${item.value}"></select>
-                        </div>
-                    <#else>
-                        <div class="form-group" data-bind="${item.ifdatabind?no_esc}">
-                            <label for="${item.options}">${item.label}</label>
-                            <input data-bind="value: ${item.value}" /><br>
-                        </div>
-                    </#if>
-                </#if>
-            </#list>
-            <br>
-            <input type="submit" value=" Order ">
-        </ul>
+    <form action="/submit" method="post" class="form-style-6">
+    <div id="app">
+<#list formdata as item>
+    <#if item?index == 0>
+        <label>${item.label}
+            <select v-model="${item.name}" @change="clearAll">
+                <option disabled value="">Please select one</option>
+                <option v-for="option in ${item.name}_options" v-bind:value="{value: option.value, text: option.text}">
+                    {{ option.text }}
+                </option>
+            </select>
+        </label>
+    <#else>
+        <#if item.type == "list">
+            <div v-if="${item.parent}.value === '${item.label}' || (${item.parent} !== '' && ${item.parent}_default === '${item.label}')">
+                <label>${item.label}
+                    <select v-model="${item.name}">
+                        <option disabled value="">Please select one</option>
+                        <option v-for="option in ${item.name}_options" v-bind:value="{value: option.value, text: option.text}">
+                            {{ option.text }}
+                        </option>
+                    </select>
+                </label>
+            </div>
+        </#if>
+        <#if item.type == "manual">
+            <div v-if="${item.parent}.value === '${item.label}' || (${item.parent} !== '' && ${item.parent}_default === '${item.label}')">
+                <label>${item.label}
+                    <input v-model="vm_memory" v-bind:placeholder="${item.name}_text">
+                </label>
+            </div>
+        </#if>
+        <#if item.type == "auto">
+                <div v-if="${item.parent}.value === '${item.label}' || (${item.parent} !== '' && ${item.parent}_default === '${item.label}')">
+                <label>${item.label}
+                    <input v-model="${item.name}">
+                </label>
+            </div>
+        </#if>
+    </#if>
+ </#list>
+        <hr>
+        <p>
+            <button @click="submitClick" type="button" class="btn btn-primary"> Show Call </button>
+            <button @click="greet" type="button" class="btn btn-primary"> API to console log </button>
+            <button @click="clearBtn" type="button" class="btn btn-primary"> Clear All </button>
+        </p>
+    </div>
     </form>
 
     <script type="text/javascript">
-        var viewModel = {
-            <#list formdata as item>
-            <#if item.type == "list">
-            ${item.options}: ${item.databind?no_esc},
-            </#if>
-            <#if item?has_next>
-            <#if item.type == "list">
-            ${item.value}: ko.observable(),
-            <#else>
-            ${item.value}: ko.observable("${item.databind?no_esc}"),
-            </#if>
-            <#else>
-            <#if item.type == "list">
-            ${item.value}: ko.observable()
-            <#else>
-            ${item.value}: ko.observable("${item.databind?no_esc}")
-            </#if>
-            </#if>
-            </#list>
-        };
-        ko.applyBindings(viewModel, document.body);
+        const app = new Vue({
+            el:'#app',
+            data: {
+                <#list formdata as item>
+                    <#if item.type == "list">
+                        <#if item?has_next>
+                            ${item.name}: '',
+                            ${item.name}_default: '${item.default}',
+                            ${item.name}_options: [ ${item.options?no_esc} ],
+                        <#else>
+                            ${item.name}: '',
+                            ${item.name}_default: '${item.default}',
+                            ${item.name}_options: [ ${item.options?no_esc} ]
+                        </#if>
+                    <#else>
+                        <#if item?has_next>
+                            ${item.name}: '',
+                            ${item.name}_text: '${item.default}',
+                            ${item.name}_default: '${item.default}',
+                        <#else>
+                            ${item.name}: '',
+                            ${item.name}_text: '${item.default}',
+                            ${item.name}_default: '${item.default}'
+                        </#if>
+                    </#if>
+                </#list>
+            },
+            methods: {
+                submitClick: function(){
+                    const data = {
+                        <#list formdata as item>
+                        request_type: this.${item.name}_type.value,
+                        </#list>
+                    }
+                    alert(JSON.stringify(data, null, 2))
+                },
+                clearAll: function() {
+                    <#list formdata as item>
+                    <#if item?index != 0>
+                    this.${item.name} = '';
+                    </#if>
+                    </#list>
+                },
+                clearBtn: function() {
+                    <#list formdata as item>
+                    this.${item.name} = '';
+                    </#list>
+                },
+                greet: function(){
+                    let tmplName =
+                        <#list formdata as item>
+                        <#if item?has_next>
+                        this.${item.name}.text + "-" +
+                        <#else>
+                        this.${item.name}.text;
+                        </#if>
+                        </#list>
+                    console.log("Ansible Workflow Template: " + tmplName)
+                },
+                vm_memory_set: function(){
+                    this.vm_memory = '2';
+                    console.log("vm change..")
+                }
+            }
+        });
     </script>
 </div>
 <!-- Content END -->

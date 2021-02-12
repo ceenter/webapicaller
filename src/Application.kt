@@ -11,7 +11,7 @@ import io.ktor.jackson.*
 import io.ktor.features.*
 import io.ktor.http.content.*
 
-const val version = "0.0.3"
+const val version = "0.0.4"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 

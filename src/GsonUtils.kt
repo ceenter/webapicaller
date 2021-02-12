@@ -6,44 +6,105 @@ import com.google.gson.JsonElement
 /*
     JSON string parsing and assembly of form items for the knockout framework.
  */
-fun jsonToFormEntry(jsonStr:String) {
+fun jsonToFormEntry(jsonStr: String) {
     val gson = Gson() // Creates new instance of Gson
     val element = gson.fromJson(jsonStr, JsonElement::class.java) //Converts the json string to JsonElement without POJO
     val jsonObj = element.asJsonObject //Converting JsonElement to JsonObject
+    val arrayParent = fillParentArray(jsonStr) // for store of relation to Parent, format: value,Parent
+    var vuedefault: String
+    var vueoptions: String
     for (aIndex in 0 until jsonObj.size()-1) {
         val aElementParentString = jsonObj.keySet().elementAt(aIndex)
         val aElementChildren = jsonObj[aElementParentString].asJsonObject
-        val variableName = aElementChildren.get("variableName").asString
-        val inputType = aElementChildren.get("inputType").asString
+        val vuename = aElementChildren.get("variableName").asString
+        val vuetype = aElementChildren.get("inputType").asString
         val valueTableJson = aElementChildren.get("valueTable").asJsonObject
-        var variableNamePrevious = ""
-        var formTableValue = ""
-        var koTableValues = ""
-        if (aIndex > 0) {
-            // because second Form needs data from previous then I save it by index minus 1
-            variableNamePrevious = jsonObj[jsonObj.keySet().elementAt(aIndex-1)].asJsonObject.get("variableName")
-                .asString
-            formTableValue = jsonObj[jsonObj.keySet().elementAt(aIndex-1)].asJsonObject.get("valueTable").asJsonObject
-                .keySet().elementAt(0)
-        }
+        vuedefault = ""
+        vueoptions = "''"
         // Depending on the value type, a list of values is generated
-        when (inputType.toString()) {
+        when (vuetype.toString()) {
             "list" -> {
-                koTableValues = "["
+                // default value from valueTable
+                if (valueTableJson.keySet().elementAt(0)=="default")
+                    vuedefault = valueTableJson.entrySet().elementAt(0).value.asString
+                // complete options like {text: xxx, value: xxx }
+                vueoptions = "{ text: '${valueTableJson.keySet().elementAt(0)}', " +
+                        "value: '${valueTableJson.entrySet().elementAt(0).value.asString}' }"
                 if (valueTableJson.size() > 1)
-                    for (bIndex in 0 until valueTableJson.size())
-                        koTableValues += "'${valueTableJson.keySet().elementAt(bIndex)}',"
-                koTableValues += "]"
+                    for (bIndex in 1 until valueTableJson.size())
+                    {
+                        if (valueTableJson.keySet().elementAt(bIndex) != "default")
+                        {
+                            vueoptions += ", { text: '${valueTableJson.keySet().elementAt(bIndex)}', " +
+                                    "value: '${valueTableJson.entrySet().elementAt(bIndex).value.asString}' }"
+                        }
+                        else
+                            vuedefault = valueTableJson.entrySet().elementAt(bIndex).value.asString
+                    }
+            }
+            "manual" ->
+                vuedefault = valueTableJson.entrySet().elementAt(0).value.asString
+            "auto" ->
+                vuedefault = valueTableJson.entrySet().elementAt(0).value.asString
+        }
+        // try to find in array second field contains aElementParentString
+        var vueparent = arrayParent.firstOrNull { it[1].contains(aElementParentString)}?.get(0).toString()
+        if (vueparent == "null") vueparent = ""
+        val newEntry = FormEntry(vuetype, vuename, aElementParentString, vueparent, vuedefault, vueoptions)
+        if (aIndex == 0) formEntries[0] = newEntry else formEntries.add(aIndex, newEntry)
+    }
+}
+
+private fun fillParentArray(jsonStr: String): Array<Array<String>> {
+    val gson = Gson() // Creates new instance of Gson
+    val element = gson.fromJson(jsonStr, JsonElement::class.java) //Converts the json string to JsonElement without POJO
+    val jsonObj = element.asJsonObject //Converting JsonElement to JsonObject
+    var arrayParent = arrayOf<Array<String>>()
+    var vuedefault: String
+    for (aIndex in 0 until jsonObj.size()-1) {
+        val aElementParentString = jsonObj.keySet().elementAt(aIndex)
+        val aElementChildren = jsonObj[aElementParentString].asJsonObject
+        val vuename = aElementChildren.get("variableName").asString
+        val vuetype = aElementChildren.get("inputType").asString
+        val valueTableJson = aElementChildren.get("valueTable").asJsonObject
+        // Depending on the value type, a list of values is generated
+        when (vuetype.toString()) {
+            "list" -> {
+                // default value from valueTable
+                if (valueTableJson.keySet().elementAt(0)=="default") {
+                    vuedefault = valueTableJson.entrySet().elementAt(0).value.asString
+                    arrayParent += arrayOf(vuename, vuedefault)
+                }
+                // if value is not empty, then store the name of child method,
+                // format arrayOf("parent name", "child name")
+                if (valueTableJson.entrySet().elementAt(0).value.asString!="")
+                    arrayParent += arrayOf(vuename, valueTableJson.entrySet().elementAt(0).value
+                        .asString)
+                if (valueTableJson.size() > 1)
+                    for (bIndex in 1 until valueTableJson.size())
+                    {
+                        if (valueTableJson.keySet().elementAt(bIndex) != "default")
+                        {
+                            // if value is not empty, then store the name of child method,
+                            // format arrayOf("parent name", "child name")
+                            if (valueTableJson.entrySet().elementAt(bIndex).value.asString!="")
+                                arrayParent += arrayOf(vuename, valueTableJson.entrySet().elementAt(bIndex).value.asString)
+                        }
+                        else {
+                            vuedefault = valueTableJson.entrySet().elementAt(bIndex).value.asString
+                            arrayParent += arrayOf(vuename, vuedefault)
+                        }
+                    }
             }
             "manual" -> {
-                koTableValues = valueTableJson.keySet().elementAt(0)
+                vuedefault = valueTableJson.entrySet().elementAt(0).value.asString
+                arrayParent += arrayOf(vuename, vuedefault)
             }
             "auto" -> {
-                koTableValues = valueTableJson.keySet().elementAt(0)
+                vuedefault = valueTableJson.entrySet().elementAt(0).value.asString
+                arrayParent += arrayOf(vuename, vuedefault)
             }
         }
-        val newEntry = FormEntry(inputType, aElementParentString,variableName+"_values",variableName+"_options",
-            "if: "+variableNamePrevious+"_values() === '$formTableValue'",koTableValues)
-        if (aIndex==0) formEntries[0] = newEntry else formEntries.add(aIndex, newEntry)
     }
+    return arrayParent
 }

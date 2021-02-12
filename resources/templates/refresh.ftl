@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type='text/javascript' src='/static/js/knockout-3.5.1.js'></script>
+    <script type='text/javascript' src='/static/js/vue.min.js'></script>
     <style id="compiled-css" type="text/css">
         form {
             max-width: 900px;
@@ -16,6 +16,24 @@
 <body>
 
 <form action="/submit" method="post">
+    <label>Request Type
+        <select v-model="request_type" @change="clearAll">
+            <option disabled value="">Please select one</option>
+            <option v-for="option in request_type_options" v-bind:value="option.value">
+                {{ option.text }}
+            </option>
+        </select>
+    </label>
+    <div v-if="request_type === 'Service Type'">
+        <label>Service Type
+            <select v-model="service_type">
+                <option disabled value="">Please select one</option>
+                <option v-for="option in service_type_options" v-bind:value="option.value">
+                    {{ option.text }}
+                </option>
+            </select>
+        </label>
+    </div>
     <#list formdata as item>
         <#if item?index == 0>
             <div class="form-group">
@@ -43,27 +61,58 @@
 </form>
 
 <script type="text/javascript">
-    var viewModel = {
-        <#list formdata as item>
-        <#if item.type == "list">
-        ${item.options}: ${item.databind?no_esc},
-        </#if>
-        <#if item?has_next>
-            <#if item.type == "list">
-            ${item.value}: ko.observable(),
-            <#else>
-            ${item.value}: ko.observable("${item.databind?no_esc}"),
-            </#if>
-        <#else>
-            <#if item.type == "list">
-            ${item.value}: ko.observable()
-            <#else>
-            ${item.value}: ko.observable("${item.databind?no_esc}")
-            </#if>
-        </#if>
-        </#list>
-    };
-    ko.applyBindings(viewModel, document.body);
+    const app = new Vue({
+        el:'#app',
+        data: {
+            request_type: '',
+            request_type_default: '',
+            request_type_options: [
+                { text: 'Service', value: 'Service Type' },
+                { text: 'Task', value: '' },
+                { text: 'Report', value: '' }
+            ],
+            service_type: '',
+            service_type_default: '',
+            service_type_options: [
+                { text: 'VM', value: 'Platform' },
+                { text: 'Storage', value: 'Storage' },
+                { text: 'Network', value: 'Network' },
+                { text: 'Application', value: 'Application' }
+            ],
+            platform: '',
+            platform_default: 'VM Operation',
+            platform_options: [
+                { text: 'RHV', value: 'RHV' },
+                { text: 'GCP', value: 'GCP' },
+                { text: 'Azure', value: 'Azure' },
+                { text: 'OpenStack', value: 'OpenStack' }
+            ],
+            vm_operation: '',
+            vm_operation_default: '',
+            vm_operation_options: [
+                { text: 'Create', value: 'Create' },
+                { text: 'List', value: 'List' },
+                { text: 'Start', value: 'Start' },
+                { text: 'Stop', value: 'Stop' }
+            ]
+        },
+        methods: {
+            submit () {
+                const data = {
+                    request_type: this.request_type,
+                    service_type: this.service_type,
+                    platform: this.platform,
+                    vm_operation: this.vm_operation
+                }
+                alert(JSON.stringify(data, null, 2))
+            },
+            clearAll:function() {
+                this.service_type = '';
+                this.platform = '';
+                this.vm_operation = '';
+            }
+        }
+    });
 </script>
 <hr>
 </body>
