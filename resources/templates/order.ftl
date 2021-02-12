@@ -18,7 +18,7 @@
 </div>
 
 <div class="sidebar">
-    <a class="active" href="/order"> Order </a>
+    <a class="active" href="/order"> Order/JSON </a>
     <a href="/jsonConfig"> JSON Config </a>
     <a href="/setting"> Settings </a>
 </div>
