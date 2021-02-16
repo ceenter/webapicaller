@@ -11,6 +11,9 @@ ComponentSettings:
   Application: app
   Project: ceeredhat
   Name: ceeredhat
+  Envs:
+  - Name: KTOR_ENV
+    Value: prod
   Url:
   - Name: ceeredhat
     Port: 8080

@@ -52,6 +52,12 @@ Once the application is created, I make changes using only using
 odo push
 ```
 
+I'm using environment variables.
+For Ktor I'm setting KTOR_ENV for production
+```
+odo config set --env KTOR_ENV=prod
+```
+
 If necessary, everything can be deleted with
 ```
 odo delete --all

@@ -27,7 +27,7 @@
 <div class="content">
     <h1>Settings</h1>
     <hr>
-    <form class="form-style-6">
+    <form class="form-style-6" action="/savesetting" method="post">
         <input type="checkbox" id="towercall" name="towercall" value="1">
         <label for="towercall"> Call Tower directly</label><br><br>
         <label for="toweradm">ansible-tower Admin:</label><br>
