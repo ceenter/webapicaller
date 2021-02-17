@@ -1,0 +1,2 @@
+# How to run postgres locally for dev env
+docker run --name postgresql-container -p 5432:5432 -e POSTGRES_PASSWORD=ceecaller -d postgres

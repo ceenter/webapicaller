@@ -3,8 +3,11 @@ package com.ceeredhat
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 
-/*
-    JSON string parsing and assembly of form items for the knockout framework.
+
+/**
+ * JSON string parsing and assembly of form items for the Vue framework.
+ *
+ * @jsonStr Input JSON as string.
  */
 fun jsonToFormEntry(jsonStr: String) {
     val gson = Gson() // Creates new instance of Gson
@@ -55,6 +58,12 @@ fun jsonToFormEntry(jsonStr: String) {
     }
 }
 
+/**
+ * Helper for jsonToFormEntry string
+ * fun goes through the whole JSON to find all the Parent-Child pairs and store them in the Array.
+ *
+ * @jsonStr Input JSON as string = same as fun jsonToFormEntry
+ */
 private fun fillParentArray(jsonStr: String): Array<Array<String>> {
     val gson = Gson() // Creates new instance of Gson
     val element = gson.fromJson(jsonStr, JsonElement::class.java) //Converts the json string to JsonElement without POJO

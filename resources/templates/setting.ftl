@@ -28,8 +28,6 @@
     <h1>Settings</h1>
     <hr>
     <form class="form-style-6" action="/savesetting" method="post">
-        <input type="checkbox" id="towercall" name="towercall" value="1">
-        <label for="towercall"> Call Tower directly</label><br><br>
         <label for="toweradm">ansible-tower Admin:</label><br>
         <input type="text" id="toweradm" name="toweradm"><br>
         <label for="towerpass">ansible-tower Password:</label><br>

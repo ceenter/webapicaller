@@ -1,4 +1,4 @@
-# CEEnter API Caller
+CEEnter API Caller
 ---
 The API Caller is an example GUI which helps generating the proper API syntax.
 Ultimately it may also execute the API call, but not at this stage yet.
@@ -63,6 +63,30 @@ If necessary, everything can be deleted with
 odo delete --all
 ```
 
+## Postgres Database
+I'm using local docker Postgres database, and also database Postgres in OpenShift
+### Creating a Remote Database Connection
+In order to access the database from a database administration tool running on your own local machine, 
+it will be necessary to expose the database service outside of the OpenShift cluster.
+```
+oc port-forward <pod-name> <local-port>:<remote:port>
+ex.
+oc port-forward postgresql-1-9npdc 15432:5432
+```
+### Schema
+```
+create table ceecaller.settings
+(
+parameter  varchar(50),
+value varchar(50)
+);
+
+alter table ceecaller.settings
+owner to postgres;
+
+INSERT INTO ceecaller.settings (parameter, value) VALUES ('toweradm', 'admin');
+INSERT INTO ceecaller.settings (parameter, value) VALUES ('towerpass', 'passWORD');
+```
 
 ## Apache FreeMarker is used to generate HTML
 

@@ -1,29 +1,37 @@
 package com.ceeredhat
 
+import com.fasterxml.jackson.databind.SerializationFeature
+import freemarker.cache.ClassTemplateLoader
+import freemarker.core.HTMLOutputFormat
 import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.freemarker.*
+import io.ktor.html.*
+import io.ktor.http.content.*
+import io.ktor.jackson.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import freemarker.cache.*
-import io.ktor.freemarker.*
-import com.fasterxml.jackson.databind.*
-import freemarker.core.HTMLOutputFormat
-import io.ktor.jackson.*
-import io.ktor.features.*
-import io.ktor.html.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.request.*
 import kotlinx.html.*
+import org.jetbrains.exposed.sql.StdOutSqlLogger
+import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
 
-const val version = "0.0.4"
+const val version = "0.1.1"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 fun Application.module() {
+
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()
-    println(env)
+    println("Environment: $env")
+
+    // Initialization of the connection to the database.
+    initDB(env)
+
     install(FreeMarker) {
         templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
         outputFormat = HTMLOutputFormat.INSTANCE
@@ -113,7 +121,6 @@ fun Application.module() {
             val params = call.receiveParameters()
             //val headline = params["headline"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             //val body = params["body"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            val towercall = params["towercall"] ?: "0"
             val toweradm = params["toweradm"] ?: ""
             val towerpass = params["towerpass"]?: ""
             call.respondHtml {
@@ -123,7 +130,6 @@ fun Application.module() {
                     }
                     p {
                         +"Parameters that have been saved:"
-                        br { +towercall }
                         br { +toweradm }
                         br { +towerpass }
                     }
@@ -140,14 +146,57 @@ fun Application.module() {
 
         // postgres test
         get("/dbtest") {
-            initDB()
+
             call.respondHtml {
                 body {
+                    style {
+                        +"""
+                    table {
+                        font: 1em Arial;
+                        border: 1px solid black;
+                        width: 100%;
+                    }
+                    th {
+                        background-color: #ccc;
+                        width: 200px;
+                    }
+                    td {
+                        background-color: #eee;
+                    }
+                    th, td {
+                        text-align: left;
+                        padding: 0.5em 1em;
+                    }
+                """.trimIndent()
+                    }
                     h1 {
                         +"Postgres list!"
                     }
                     p {
                         +"Parameters that have been saved:"
+                        hr {  }
+                        table {
+                            tr {
+                                th {
+                                    text("Parameter")
+                                }
+                                th {
+                                    text("Value")
+                                }
+                            }
+                            // select query
+                            transaction {
+                                // Statements here
+                                //addLogger(StdOutSqlLogger)
+                                val query = CeecallerSettings.selectAll()
+                                query.forEach {
+                                    tr {
+                                        td { text(it[CeecallerSettings.parameter]) }
+                                        td { text(it[CeecallerSettings.value]) }
+                                    }
+                                }
+                            }
+                        }
                     }
                     hr {  }
                     p {
@@ -161,6 +210,7 @@ fun Application.module() {
         }
     }
 }
+
 
 
 
