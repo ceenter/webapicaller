@@ -13,13 +13,11 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.html.*
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 
-const val version = "0.1.1"
+const val version = "0.1.2"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -76,6 +74,25 @@ fun Application.module() {
                     ""))
         }
 
+        get("/ordertower") {
+            formEntries.clear()
+            formEntries= mutableListOf(
+                FormEntry(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ))
+            jsonToFormEntry(jsonConfigURL)
+            call.respond(
+                FreeMarkerContent("ordertower.ftl", mapOf(
+                    "version" to version,
+                    "formdata" to formEntries),
+                    ""))
+        }
+
         get("/jsonConfig") {
             call.respond(
                 FreeMarkerContent("jsonConfig.ftl", mapOf(
@@ -86,12 +103,30 @@ fun Application.module() {
         }
 
         get("/setting") {
-                    //call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-                    // mapOf(   "name" to roomName, "username" to userSession.name,  "chat" to chatMsgs )
-                    call.respond(
-                        FreeMarkerContent("setting.ftl", mapOf(
-                            "version" to version),
-                            ""))
+            formSettings.clear()
+            /*
+            formSettings= mutableListOf(
+                FormSettings(
+                    "",
+                    ""
+                ))
+             */
+            transaction {
+                // Statements here
+                //addLogger(StdOutSqlLogger)
+                val query = CeecallerSettings.selectAll()
+                query.forEachIndexed { index, resultRow ->
+                    val newEntry = FormSettings(resultRow[CeecallerSettings.parameter], resultRow[CeecallerSettings.value])
+                    formSettings.add(index, newEntry)
+                }
+            }
+            //call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+            // mapOf(   "name" to roomName, "username" to userSession.name,  "chat" to chatMsgs )
+            call.respond(
+                FreeMarkerContent("setting.ftl", mapOf(
+                    "version" to version,
+                    "data" to formSettings),
+                    ""))
                 }
 
         get("/refresh") {
@@ -121,17 +156,50 @@ fun Application.module() {
             val params = call.receiveParameters()
             //val headline = params["headline"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             //val body = params["body"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            val toweradm = params["toweradm"] ?: ""
-            val towerpass = params["towerpass"]?: ""
+            //val toweradm = params["toweradm"] ?: ""
+            //val towerpass = params["towerpass"]?: ""
             call.respondHtml {
                 body {
+                    style {
+                        +"""
+                    table {
+                        font: 1em Arial;
+                        border: 1px solid black;
+                        width: 50%;
+                    }
+                    th {
+                        background-color: #ccc;
+                    }
+                    td {
+                        background-color: #eee;
+                    }
+                    th, td {
+                        text-align: left;
+                        padding: 0.5em 1em;
+                    }
+                """.trimIndent()
+                    }
                     h1 {
-                        +"Settings saved!"
+                        +"Settings received correctly!"
                     }
                     p {
-                        +"Parameters that have been saved:"
-                        br { +toweradm }
-                        br { +towerpass }
+                        +"Parameters that you sent:"
+                            table {
+                                tr {
+                                    th {
+                                        text("Parameter")
+                                    }
+                                    th {
+                                        text("Value")
+                                    }
+                                }
+                                params.forEach { s, list ->
+                                    tr {
+                                        td { +s.trim() }
+                                        td { +list[0] }
+                                    }
+                                }
+                            }
                     }
                     hr {  }
                     p {

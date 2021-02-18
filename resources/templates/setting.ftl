@@ -9,14 +9,15 @@
 </head>
 <body>
 
-<!-- Navigation bar START -->
+<!-- Page Header -->
 <div class="header_image clearfix" style="padding: 2px 15px;color: #f2f2f2;background-color: #292929">
-    <a href="/"><img src="/static/redhatlogo.svg" width="180" height="35"/></a>
+    <a href="/"><img src="/static/redhatlogo.svg" width="180" height="35" alt=""/></a>
     <h2 style = "vertical-align:middle;">CEEnter</h2>
     <p style="float: right">version ${version}</p>
 </div>
-
+<!-- Navigation bar START -->
 <div class="sidebar">
+    <a href="/ordertower"> Order/Tower </a>
     <a href="/order"> Order/JSON </a>
     <a href="/jsonConfig"> JSON Config </a>
     <a class="active" href="/setting"> Settings </a>
@@ -28,10 +29,15 @@
     <h1>Settings</h1>
     <hr>
     <form class="form-style-6" action="/savesetting" method="post">
-        <label for="toweradm">ansible-tower Admin:</label><br>
-        <input type="text" id="toweradm" name="toweradm"><br>
-        <label for="towerpass">ansible-tower Password:</label><br>
-        <input type="text" id="towerpass" name="towerpass"><br>
+        <table>
+            <#list data as item>
+            <tr>
+                <td style="width:50%">${item.parameter}</td>
+                <td style="width:50%">
+                <label><input type="text" name="${item.parameter}" value="${item.value}"/></label></td>
+            </tr>
+            </#list>
+        </table>
         <input type="submit" value="Save Settings">
     </form>
 </div>

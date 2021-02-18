@@ -18,8 +18,8 @@
 </div>
 <!-- Navigation bar START -->
 <div class="sidebar">
-    <a href="/ordertower"> Order/Tower </a>
-    <a class="active" href="/order"> Order/JSON </a>
+    <a class="active" href="/ordertower"> Order/Tower </a>
+    <a href="/order"> Order/JSON </a>
     <a href="/jsonConfig"> JSON Config </a>
     <a href="/setting"> Settings </a>
 </div>
@@ -27,7 +27,7 @@
 
 <!-- Content START -->
 <div class="content">
-    <h1>Order based on JSON config</h1>
+    <h1>Order based on Tower templates</h1>
     <hr>
     <form action="/submit" method="post" class="form-style-6">
     <div id="app">
