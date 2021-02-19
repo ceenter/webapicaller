@@ -1,0 +1,278 @@
+{
+  "count": 2,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 36,
+      "type": "workflow_job_template",
+      "url": "/api/v2/workflow_job_templates/36/",
+      "related": {
+        "created_by": "/api/v2/users/2/",
+        "modified_by": "/api/v2/users/2/",
+        "last_job": "/api/v2/workflow_jobs/248/",
+        "workflow_jobs": "/api/v2/workflow_job_templates/36/workflow_jobs/",
+        "schedules": "/api/v2/workflow_job_templates/36/schedules/",
+        "launch": "/api/v2/workflow_job_templates/36/launch/",
+        "webhook_key": "/api/v2/workflow_job_templates/36/webhook_key/",
+        "webhook_receiver": "",
+        "workflow_nodes": "/api/v2/workflow_job_templates/36/workflow_nodes/",
+        "labels": "/api/v2/workflow_job_templates/36/labels/",
+        "activity_stream": "/api/v2/workflow_job_templates/36/activity_stream/",
+        "notification_templates_started": "/api/v2/workflow_job_templates/36/notification_templates_started/",
+        "notification_templates_success": "/api/v2/workflow_job_templates/36/notification_templates_success/",
+        "notification_templates_error": "/api/v2/workflow_job_templates/36/notification_templates_error/",
+        "notification_templates_approvals": "/api/v2/workflow_job_templates/36/notification_templates_approvals/",
+        "access_list": "/api/v2/workflow_job_templates/36/access_list/",
+        "object_roles": "/api/v2/workflow_job_templates/36/object_roles/",
+        "survey_spec": "/api/v2/workflow_job_templates/36/survey_spec/",
+        "copy": "/api/v2/workflow_job_templates/36/copy/"
+      },
+      "summary_fields": {
+        "last_job": {
+          "id": 248,
+          "name": "Service-VM-GCP-Create",
+          "description": "Create VM Service on GCP Platform",
+          "finished": "2021-02-19T13:52:05.767976Z",
+          "status": "successful",
+          "failed": false
+        },
+        "last_update": {
+          "id": 248,
+          "name": "Service-VM-GCP-Create",
+          "description": "Create VM Service on GCP Platform",
+          "status": "successful",
+          "failed": false
+        },
+        "created_by": {
+          "id": 2,
+          "username": "admin",
+          "first_name": "",
+          "last_name": ""
+        },
+        "modified_by": {
+          "id": 2,
+          "username": "admin",
+          "first_name": "",
+          "last_name": ""
+        },
+        "object_roles": {
+          "admin_role": {
+            "description": "Can manage all aspects of the workflow job template",
+            "name": "Admin",
+            "id": 189
+          },
+          "execute_role": {
+            "description": "May run the workflow job template",
+            "name": "Execute",
+            "id": 190
+          },
+          "read_role": {
+            "description": "May view settings for the workflow job template",
+            "name": "Read",
+            "id": 191
+          },
+          "approval_role": {
+            "description": "Can approve or deny a workflow approval node",
+            "name": "Approve",
+            "id": 192
+          }
+        },
+        "user_capabilities": {
+          "edit": true,
+          "delete": true,
+          "start": true,
+          "schedule": true,
+          "copy": true
+        },
+        "labels": {
+          "count": 0,
+          "results": []
+        },
+        "survey": {
+          "title": "",
+          "description": ""
+        },
+        "recent_jobs": [
+          {
+            "id": 248,
+            "status": "successful",
+            "finished": "2021-02-19T13:52:05.767976Z",
+            "canceled_on": null,
+            "type": "workflow_job"
+          }
+        ]
+      },
+      "created": "2021-02-19T13:44:58.849442Z",
+      "modified": "2021-02-19T13:49:42.005780Z",
+      "name": "Service-VM-GCP-Create",
+      "description": "Create VM Service on GCP Platform",
+      "last_job_run": "2021-02-19T13:52:05.767976Z",
+      "last_job_failed": false,
+      "next_job_run": null,
+      "status": "successful",
+      "extra_vars": "",
+      "organization": null,
+      "survey_enabled": true,
+      "allow_simultaneous": false,
+      "ask_variables_on_launch": false,
+      "inventory": null,
+      "limit": null,
+      "scm_branch": null,
+      "ask_inventory_on_launch": false,
+      "ask_scm_branch_on_launch": false,
+      "ask_limit_on_launch": false,
+      "webhook_service": "",
+      "webhook_credential": null
+    },
+    {
+      "id": 29,
+      "type": "workflow_job_template",
+      "url": "/api/v2/workflow_job_templates/29/",
+      "related": {
+        "created_by": "/api/v2/users/2/",
+        "modified_by": "/api/v2/users/2/",
+        "last_job": "/api/v2/workflow_jobs/150/",
+        "workflow_jobs": "/api/v2/workflow_job_templates/29/workflow_jobs/",
+        "schedules": "/api/v2/workflow_job_templates/29/schedules/",
+        "launch": "/api/v2/workflow_job_templates/29/launch/",
+        "webhook_key": "/api/v2/workflow_job_templates/29/webhook_key/",
+        "webhook_receiver": "",
+        "workflow_nodes": "/api/v2/workflow_job_templates/29/workflow_nodes/",
+        "labels": "/api/v2/workflow_job_templates/29/labels/",
+        "activity_stream": "/api/v2/workflow_job_templates/29/activity_stream/",
+        "notification_templates_started": "/api/v2/workflow_job_templates/29/notification_templates_started/",
+        "notification_templates_success": "/api/v2/workflow_job_templates/29/notification_templates_success/",
+        "notification_templates_error": "/api/v2/workflow_job_templates/29/notification_templates_error/",
+        "notification_templates_approvals": "/api/v2/workflow_job_templates/29/notification_templates_approvals/",
+        "access_list": "/api/v2/workflow_job_templates/29/access_list/",
+        "object_roles": "/api/v2/workflow_job_templates/29/object_roles/",
+        "survey_spec": "/api/v2/workflow_job_templates/29/survey_spec/",
+        "copy": "/api/v2/workflow_job_templates/29/copy/",
+        "organization": "/api/v2/organizations/3/"
+      },
+      "summary_fields": {
+        "organization": {
+          "id": 3,
+          "name": "ceenter",
+          "description": ""
+        },
+        "inventory": {
+          "id": 3,
+          "name": "RHV Dynamic Inventory",
+          "description": "",
+          "has_active_failures": false,
+          "total_hosts": 2,
+          "hosts_with_active_failures": 0,
+          "total_groups": 3,
+          "has_inventory_sources": true,
+          "total_inventory_sources": 1,
+          "inventory_sources_with_failures": 0,
+          "organization_id": 3,
+          "kind": ""
+        },
+        "last_job": {
+          "id": 150,
+          "name": "Service-VM-RHV-Create",
+          "description": "",
+          "finished": "2021-01-13T10:12:54.251215Z",
+          "status": "successful",
+          "failed": false
+        },
+        "last_update": {
+          "id": 150,
+          "name": "Service-VM-RHV-Create",
+          "description": "",
+          "status": "successful",
+          "failed": false
+        },
+        "created_by": {
+          "id": 2,
+          "username": "admin",
+          "first_name": "",
+          "last_name": ""
+        },
+        "modified_by": {
+          "id": 2,
+          "username": "admin",
+          "first_name": "",
+          "last_name": ""
+        },
+        "object_roles": {
+          "admin_role": {
+            "description": "Can manage all aspects of the workflow job template",
+            "name": "Admin",
+            "id": 162
+          },
+          "execute_role": {
+            "description": "May run the workflow job template",
+            "name": "Execute",
+            "id": 163
+          },
+          "read_role": {
+            "description": "May view settings for the workflow job template",
+            "name": "Read",
+            "id": 164
+          },
+          "approval_role": {
+            "description": "Can approve or deny a workflow approval node",
+            "name": "Approve",
+            "id": 165
+          }
+        },
+        "user_capabilities": {
+          "edit": true,
+          "delete": true,
+          "start": true,
+          "schedule": true,
+          "copy": true
+        },
+        "labels": {
+          "count": 0,
+          "results": []
+        },
+        "survey": {
+          "title": "",
+          "description": ""
+        },
+        "recent_jobs": [
+          {
+            "id": 150,
+            "status": "successful",
+            "finished": "2021-01-13T10:12:54.251215Z",
+            "canceled_on": null,
+            "type": "workflow_job"
+          },
+          {
+            "id": 143,
+            "status": "successful",
+            "finished": "2021-01-08T13:44:07.733660Z",
+            "canceled_on": null,
+            "type": "workflow_job"
+          }
+        ]
+      },
+      "created": "2021-01-08T12:47:15.694333Z",
+      "modified": "2021-02-19T13:39:17.112015Z",
+      "name": "Service-VM-RHV-Create",
+      "description": "Create VM Service on RHV Platform",
+      "last_job_run": "2021-01-13T10:12:54.251215Z",
+      "last_job_failed": false,
+      "next_job_run": null,
+      "status": "successful",
+      "extra_vars": "",
+      "organization": 3,
+      "survey_enabled": true,
+      "allow_simultaneous": false,
+      "ask_variables_on_launch": true,
+      "inventory": 3,
+      "limit": null,
+      "scm_branch": null,
+      "ask_inventory_on_launch": false,
+      "ask_scm_branch_on_launch": false,
+      "ask_limit_on_launch": false,
+      "webhook_service": "",
+      "webhook_credential": null
+    }
+  ]
+}

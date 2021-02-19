@@ -86,13 +86,13 @@ tr:nth-child(even) {
   font: 95% Arial, Helvetica, sans-serif;
   max-width: 400px;
   margin: 50px;
-  padding: 16px;
+  padding: 10px;
   background: #F7F7F7;
 }
 .form-style-6 h1{
   background: #008dea;
   padding: 20px 0;
-  font-size: 140%;
+  font-size: 130%;
   font-weight: 300;
   text-align: center;
   color: #fff;
@@ -119,9 +119,9 @@ tr:nth-child(even) {
   -moz-box-sizing: border-box;
   width: 100%;
   background: #fff;
-  margin-bottom: 4%;
+  margin-bottom: 1%;
   border: 1px solid #ccc;
-  padding: 3%;
+  padding: 2%;
   color: #555;
   font: 95% Arial, Helvetica, sans-serif;
 }
@@ -137,7 +137,7 @@ tr:nth-child(even) {
 .form-style-6 select:focus
 {
   box-shadow: 0 0 5px #007ccd;
-  padding: 3%;
+  padding: 2%;
   border: 1px solid #007ccd;
 }
 
@@ -147,7 +147,7 @@ tr:nth-child(even) {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   width: 100%;
-  padding: 3%;
+  padding: 2%;
   background: #007ccd;
   border-bottom: 2px solid #007ccd;
   border-top-style: none;

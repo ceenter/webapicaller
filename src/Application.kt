@@ -7,6 +7,7 @@ import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.freemarker.*
 import io.ktor.html.*
+import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.jackson.*
 import io.ktor.request.*
@@ -15,9 +16,10 @@ import io.ktor.routing.*
 import kotlinx.html.*
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 
-const val version = "0.1.2"
+const val version = "0.1.3"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -46,6 +48,7 @@ fun Application.module() {
             resources("static")
         }
 
+//---------------------------------------------------------------------------------------------------------------- GET /
         get("/") {
             //call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
             // mapOf(   "name" to roomName, "username" to userSession.name,  "chat" to chatMsgs )
@@ -55,6 +58,7 @@ fun Application.module() {
                     ""))
         }
 
+//----------------------------------------------------------------------------------------------------------- GET /order
         get("/order") {
             formEntries.clear()
             formEntries= mutableListOf(
@@ -74,7 +78,11 @@ fun Application.module() {
                     ""))
         }
 
+//------------------------------------------------------------------------------------------------------ GET /ordertower
         get("/ordertower") {
+            // call Tower
+            val response =
+                sendGet(towerhost + towerworkflowtemplates, toweradm, towerpass)
             formEntries.clear()
             formEntries= mutableListOf(
                 FormEntry(
@@ -85,7 +93,7 @@ fun Application.module() {
                     "",
                     ""
                 ))
-            jsonToFormEntry(jsonConfigURL)
+            jsonFromTower(response)
             call.respond(
                 FreeMarkerContent("ordertower.ftl", mapOf(
                     "version" to version,
@@ -93,6 +101,7 @@ fun Application.module() {
                     ""))
         }
 
+//------------------------------------------------------------------------------------------------------ GET /jsonConfig
         get("/jsonConfig") {
             call.respond(
                 FreeMarkerContent("jsonConfig.ftl", mapOf(
@@ -102,15 +111,9 @@ fun Application.module() {
                     ""))
         }
 
+//--------------------------------------------------------------------------------------------------------- GET /setting
         get("/setting") {
             formSettings.clear()
-            /*
-            formSettings= mutableListOf(
-                FormSettings(
-                    "",
-                    ""
-                ))
-             */
             transaction {
                 // Statements here
                 //addLogger(StdOutSqlLogger)
@@ -120,15 +123,14 @@ fun Application.module() {
                     formSettings.add(index, newEntry)
                 }
             }
-            //call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-            // mapOf(   "name" to roomName, "username" to userSession.name,  "chat" to chatMsgs )
             call.respond(
                 FreeMarkerContent("setting.ftl", mapOf(
                     "version" to version,
                     "data" to formSettings),
                     ""))
-                }
+        }
 
+//--------------------------------------------------------------------------------------------------------- GET /refresh
         get("/refresh") {
             formEntries.clear()
             formEntries= mutableListOf(
@@ -147,17 +149,15 @@ fun Application.module() {
             )
         }
 
-
+//---------------------------------------------------------------------------------------------------- GET /json/jackson
         get("/json/jackson") {
             call.respond(mapOf("hello" to "world"))
         }
 
+//---------------------------------------------------------------------------------------------------- POST /savesetting
         post("/savesetting") {
             val params = call.receiveParameters()
-            //val headline = params["headline"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            //val body = params["body"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            //val toweradm = params["toweradm"] ?: ""
-            //val towerpass = params["towerpass"]?: ""
+            settingsParam(params) // Update settings table based on changed parameters
             call.respondHtml {
                 body {
                     style {
@@ -212,6 +212,7 @@ fun Application.module() {
             }
         }
 
+//---------------------------------------------------------------------------------------------------------- GET /dbtest
         // postgres test
         get("/dbtest") {
 

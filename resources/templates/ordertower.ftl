@@ -40,6 +40,7 @@
                     {{ option.text }}
                 </option>
             </select>
+            <span>Selected name: {{ ${item.name}.value }}</span>
         </label>
     <#else>
         <#if item.type == "list">

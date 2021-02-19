@@ -28,12 +28,12 @@
 <div class="content">
     <h1>Settings</h1>
     <hr>
-    <form class="form-style-6" action="/savesetting" method="post">
+    <form class="form-style-6" action="/savesetting" method="post" style="max-width: 800px;">
         <table>
             <#list data as item>
             <tr>
-                <td style="width:50%">${item.parameter}</td>
-                <td style="width:50%">
+                <td style="width:30%">${item.parameter}</td>
+                <td style="width:70%">
                 <label><input type="text" name="${item.parameter}" value="${item.value}"/></label></td>
             </tr>
             </#list>

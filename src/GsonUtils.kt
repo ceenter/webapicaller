@@ -2,6 +2,8 @@ package com.ceeredhat
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import templateJobTower.TowerJob
+import templateWorkflowTower.TowerWorkflow
 
 
 /**
@@ -63,6 +65,7 @@ fun jsonToFormEntry(jsonStr: String) {
  * fun goes through the whole JSON to find all the Parent-Child pairs and store them in the Array.
  *
  * @jsonStr Input JSON as string = same as fun jsonToFormEntry
+ * @return Array with key pairs store Parent-Child
  */
 private fun fillParentArray(jsonStr: String): Array<Array<String>> {
     val gson = Gson() // Creates new instance of Gson
@@ -116,4 +119,57 @@ private fun fillParentArray(jsonStr: String): Array<Array<String>> {
         }
     }
     return arrayParent
+}
+
+/**
+ * JSON string parsing and assembly of form items for the Vue framework.
+ * Form version based on data from Tower
+ *
+ * @jsonStr Input JSON as string.
+ */
+fun jsonFromTower(myJson:String) {
+    val gson = Gson()
+    val mTower = gson.fromJson(myJson, TowerWorkflow::class.java)
+    // default for first Form Option
+    val vuetype = "list"
+    val vuename = "template_name"
+    val vuelabel = "Tower Workflow Template"
+    val vueparent = ""
+    val vuedefault = ""
+    var vueoptions = ""
+    for (aIndex in 0 until mTower.results.count()) {
+        if (mTower.results[aIndex].description != "") {
+            //println(mTower.results[aIndex].description)
+            vueoptions += if (vueoptions == "")
+                "{ text: '${mTower.results[aIndex].description}', " +
+                        "value: '${mTower.results[aIndex].name}' }"
+            else
+                ", { text: '${mTower.results[aIndex].description}', " +
+                        "value: '${mTower.results[aIndex].name}' }"
+        }
+    }
+    val newEntry = FormEntry(vuetype, vuename, vuelabel, vueparent, vuedefault, vueoptions)
+    formEntries[0] = newEntry
+    // Read second part of Form related on previous model
+    /*
+    mTower = gson.fromJson(myJson, TowerJob::class.java)
+    vuetype = "list"
+    vuename = "template_name"
+    vuelabel = "Tower template"
+    vueparent = ""
+    vuedefault = ""
+    vueoptions = ""
+    for (aIndex in 0 until mTower.results.count()) {
+        if (mTower.results[aIndex].description != "") {
+            //println(mTower.results[aIndex].description)
+            vueoptions += if (vueoptions == "")
+                "{ text: '${mTower.results[aIndex].description}', " +
+                        "value: '${mTower.results[aIndex].name}' }"
+            else
+                ", { text: '${mTower.results[aIndex].description}', " +
+                        "value: '${mTower.results[aIndex].name}' }"
+        }
+    }
+
+     */
 }

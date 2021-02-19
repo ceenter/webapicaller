@@ -191,9 +191,9 @@
         ]
       },
       "created": "2020-11-12T15:06:55.717899Z",
-      "modified": "2020-11-12T15:20:37.875055Z",
+      "modified": "2021-02-19T13:23:15.087692Z",
       "name": "apoczeka tests",
-      "description": "Start DHCP server for RHV",
+      "description": "",
       "job_type": "run",
       "inventory": 6,
       "project": 18,
@@ -381,20 +381,6 @@
             "finished": "2020-10-23T11:16:57.408698Z",
             "canceled_on": null,
             "type": "job"
-          },
-          {
-            "id": 11,
-            "status": "successful",
-            "finished": "2020-10-15T12:29:59.159603Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 9,
-            "status": "failed",
-            "finished": "2020-10-15T12:28:15.335826Z",
-            "canceled_on": null,
-            "type": "job"
           }
         ],
         "credentials": [
@@ -408,9 +394,9 @@
         ]
       },
       "created": "2020-10-15T12:27:51.758281Z",
-      "modified": "2020-10-15T12:27:51.758303Z",
+      "modified": "2021-02-19T13:20:50.952317Z",
       "name": "Gather Facts",
-      "description": "Fact gathering playbook",
+      "description": "",
       "job_type": "run",
       "inventory": 2,
       "project": 9,
@@ -1056,7 +1042,7 @@
         ]
       },
       "created": "2020-10-15T13:47:41.183742Z",
-      "modified": "2021-01-08T13:38:45.537717Z",
+      "modified": "2021-02-19T13:38:52.142792Z",
       "name": "RHV VM Create",
       "description": "",
       "job_type": "run",
@@ -1100,248 +1086,6 @@
       "webhook_credential": null
     },
     {
-      "id": 30,
-      "type": "job_template",
-      "url": "/api/v2/job_templates/30/",
-      "related": {
-        "created_by": "/api/v2/users/2/",
-        "modified_by": "/api/v2/users/2/",
-        "labels": "/api/v2/job_templates/30/labels/",
-        "inventory": "/api/v2/inventories/2/",
-        "project": "/api/v2/projects/27/",
-        "organization": "/api/v2/organizations/3/",
-        "extra_credentials": "/api/v2/job_templates/30/extra_credentials/",
-        "credentials": "/api/v2/job_templates/30/credentials/",
-        "last_job": "/api/v2/jobs/206/",
-        "jobs": "/api/v2/job_templates/30/jobs/",
-        "schedules": "/api/v2/job_templates/30/schedules/",
-        "activity_stream": "/api/v2/job_templates/30/activity_stream/",
-        "launch": "/api/v2/job_templates/30/launch/",
-        "webhook_key": "/api/v2/job_templates/30/webhook_key/",
-        "webhook_receiver": "",
-        "notification_templates_started": "/api/v2/job_templates/30/notification_templates_started/",
-        "notification_templates_success": "/api/v2/job_templates/30/notification_templates_success/",
-        "notification_templates_error": "/api/v2/job_templates/30/notification_templates_error/",
-        "access_list": "/api/v2/job_templates/30/access_list/",
-        "survey_spec": "/api/v2/job_templates/30/survey_spec/",
-        "object_roles": "/api/v2/job_templates/30/object_roles/",
-        "instance_groups": "/api/v2/job_templates/30/instance_groups/",
-        "slice_workflow_jobs": "/api/v2/job_templates/30/slice_workflow_jobs/",
-        "copy": "/api/v2/job_templates/30/copy/"
-      },
-      "summary_fields": {
-        "organization": {
-          "id": 3,
-          "name": "ceenter",
-          "description": ""
-        },
-        "inventory": {
-          "id": 2,
-          "name": "localhost",
-          "description": "",
-          "has_active_failures": false,
-          "total_hosts": 1,
-          "hosts_with_active_failures": 0,
-          "total_groups": 0,
-          "has_inventory_sources": false,
-          "total_inventory_sources": 0,
-          "inventory_sources_with_failures": 0,
-          "organization_id": 3,
-          "kind": ""
-        },
-        "project": {
-          "id": 27,
-          "name": "Ceenter Test - jwerak",
-          "description": "Ansible Playground for Jakub",
-          "status": "successful",
-          "scm_type": "git"
-        },
-        "last_job": {
-          "id": 206,
-          "name": "Service-VM-GCP-Create",
-          "description": "",
-          "finished": "2021-02-12T10:31:04.919364Z",
-          "status": "successful",
-          "failed": false
-        },
-        "last_update": {
-          "id": 206,
-          "name": "Service-VM-GCP-Create",
-          "description": "",
-          "status": "successful",
-          "failed": false
-        },
-        "created_by": {
-          "id": 2,
-          "username": "admin",
-          "first_name": "",
-          "last_name": ""
-        },
-        "modified_by": {
-          "id": 2,
-          "username": "admin",
-          "first_name": "",
-          "last_name": ""
-        },
-        "object_roles": {
-          "admin_role": {
-            "description": "Can manage all aspects of the job template",
-            "name": "Admin",
-            "id": 166
-          },
-          "execute_role": {
-            "description": "May run the job template",
-            "name": "Execute",
-            "id": 167
-          },
-          "read_role": {
-            "description": "May view settings for the job template",
-            "name": "Read",
-            "id": 168
-          }
-        },
-        "user_capabilities": {
-          "edit": true,
-          "delete": true,
-          "start": true,
-          "schedule": true,
-          "copy": true
-        },
-        "labels": {
-          "count": 0,
-          "results": []
-        },
-        "survey": {
-          "title": "GCP VM Create",
-          "description": "Input parameters for creating VM in GCP"
-        },
-        "recent_jobs": [
-          {
-            "id": 206,
-            "status": "successful",
-            "finished": "2021-02-12T10:31:04.919364Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 202,
-            "status": "successful",
-            "finished": "2021-02-11T15:57:28.194529Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 196,
-            "status": "successful",
-            "finished": "2021-02-11T15:09:51.223462Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 190,
-            "status": "successful",
-            "finished": "2021-02-05T16:08:54.765077Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 188,
-            "status": "failed",
-            "finished": "2021-02-05T15:54:08.002227Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 183,
-            "status": "successful",
-            "finished": "2021-02-05T15:27:59.536056Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 177,
-            "status": "successful",
-            "finished": "2021-01-29T15:25:00.880188Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 175,
-            "status": "failed",
-            "finished": "2021-01-29T15:19:44.167048Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 167,
-            "status": "successful",
-            "finished": "2021-01-15T13:23:59.675958Z",
-            "canceled_on": null,
-            "type": "job"
-          },
-          {
-            "id": 165,
-            "status": "successful",
-            "finished": "2021-01-15T13:22:23.643380Z",
-            "canceled_on": null,
-            "type": "job"
-          }
-        ],
-        "credentials": [
-          {
-            "id": 4,
-            "name": "gcp-jveverka",
-            "description": "",
-            "kind": "gce",
-            "cloud": true
-          }
-        ]
-      },
-      "created": "2021-01-15T12:56:23.239868Z",
-      "modified": "2021-01-29T14:55:41.284202Z",
-      "name": "Service-VM-GCP-Create",
-      "description": "",
-      "job_type": "run",
-      "inventory": 2,
-      "project": 27,
-      "playbook": "Service-GCP-VM-Create.yml",
-      "scm_branch": "",
-      "forks": 0,
-      "limit": "",
-      "verbosity": 0,
-      "extra_vars": "",
-      "job_tags": "",
-      "force_handlers": false,
-      "skip_tags": "",
-      "start_at_task": "",
-      "timeout": 0,
-      "use_fact_cache": false,
-      "organization": 3,
-      "last_job_run": "2021-02-12T10:31:04.919364Z",
-      "last_job_failed": false,
-      "next_job_run": null,
-      "status": "successful",
-      "host_config_key": "",
-      "ask_scm_branch_on_launch": false,
-      "ask_diff_mode_on_launch": false,
-      "ask_variables_on_launch": false,
-      "ask_limit_on_launch": false,
-      "ask_tags_on_launch": false,
-      "ask_skip_tags_on_launch": false,
-      "ask_job_type_on_launch": false,
-      "ask_verbosity_on_launch": false,
-      "ask_inventory_on_launch": false,
-      "ask_credential_on_launch": false,
-      "survey_enabled": true,
-      "become_enabled": false,
-      "diff_mode": false,
-      "allow_simultaneous": false,
-      "custom_virtualenv": null,
-      "job_slice_count": 1,
-      "webhook_service": "",
-      "webhook_credential": null
-    },
-    {
       "id": 31,
       "type": "job_template",
       "url": "/api/v2/job_templates/31/",
@@ -1354,7 +1098,7 @@
         "organization": "/api/v2/organizations/3/",
         "extra_credentials": "/api/v2/job_templates/31/extra_credentials/",
         "credentials": "/api/v2/job_templates/31/credentials/",
-        "last_job": "/api/v2/jobs/204/",
+        "last_job": "/api/v2/jobs/253/",
         "jobs": "/api/v2/job_templates/31/jobs/",
         "schedules": "/api/v2/job_templates/31/schedules/",
         "activity_stream": "/api/v2/job_templates/31/activity_stream/",
@@ -1399,15 +1143,15 @@
           "scm_type": "git"
         },
         "last_job": {
-          "id": 204,
+          "id": 253,
           "name": "Service-VM-GCP-Delete",
           "description": "",
-          "finished": "2021-02-11T16:47:18.920452Z",
+          "finished": "2021-02-19T13:56:23.347222Z",
           "status": "successful",
           "failed": false
         },
         "last_update": {
-          "id": 204,
+          "id": 253,
           "name": "Service-VM-GCP-Delete",
           "description": "",
           "status": "successful",
@@ -1458,6 +1202,20 @@
           "description": "Input parameters for deleting VM in GCP"
         },
         "recent_jobs": [
+          {
+            "id": 253,
+            "status": "successful",
+            "finished": "2021-02-19T13:56:23.347222Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 208,
+            "status": "successful",
+            "finished": "2021-02-12T13:21:28.876644Z",
+            "canceled_on": null,
+            "type": "job"
+          },
           {
             "id": 204,
             "status": "successful",
@@ -1531,7 +1289,249 @@
       "timeout": 0,
       "use_fact_cache": false,
       "organization": 3,
-      "last_job_run": "2021-02-11T16:47:18.920452Z",
+      "last_job_run": "2021-02-19T13:56:23.347222Z",
+      "last_job_failed": false,
+      "next_job_run": null,
+      "status": "successful",
+      "host_config_key": "",
+      "ask_scm_branch_on_launch": false,
+      "ask_diff_mode_on_launch": false,
+      "ask_variables_on_launch": false,
+      "ask_limit_on_launch": false,
+      "ask_tags_on_launch": false,
+      "ask_skip_tags_on_launch": false,
+      "ask_job_type_on_launch": false,
+      "ask_verbosity_on_launch": false,
+      "ask_inventory_on_launch": false,
+      "ask_credential_on_launch": false,
+      "survey_enabled": true,
+      "become_enabled": false,
+      "diff_mode": false,
+      "allow_simultaneous": false,
+      "custom_virtualenv": null,
+      "job_slice_count": 1,
+      "webhook_service": "",
+      "webhook_credential": null
+    },
+    {
+      "id": 30,
+      "type": "job_template",
+      "url": "/api/v2/job_templates/30/",
+      "related": {
+        "created_by": "/api/v2/users/2/",
+        "modified_by": "/api/v2/users/2/",
+        "labels": "/api/v2/job_templates/30/labels/",
+        "inventory": "/api/v2/inventories/2/",
+        "project": "/api/v2/projects/27/",
+        "organization": "/api/v2/organizations/3/",
+        "extra_credentials": "/api/v2/job_templates/30/extra_credentials/",
+        "credentials": "/api/v2/job_templates/30/credentials/",
+        "last_job": "/api/v2/jobs/249/",
+        "jobs": "/api/v2/job_templates/30/jobs/",
+        "schedules": "/api/v2/job_templates/30/schedules/",
+        "activity_stream": "/api/v2/job_templates/30/activity_stream/",
+        "launch": "/api/v2/job_templates/30/launch/",
+        "webhook_key": "/api/v2/job_templates/30/webhook_key/",
+        "webhook_receiver": "",
+        "notification_templates_started": "/api/v2/job_templates/30/notification_templates_started/",
+        "notification_templates_success": "/api/v2/job_templates/30/notification_templates_success/",
+        "notification_templates_error": "/api/v2/job_templates/30/notification_templates_error/",
+        "access_list": "/api/v2/job_templates/30/access_list/",
+        "survey_spec": "/api/v2/job_templates/30/survey_spec/",
+        "object_roles": "/api/v2/job_templates/30/object_roles/",
+        "instance_groups": "/api/v2/job_templates/30/instance_groups/",
+        "slice_workflow_jobs": "/api/v2/job_templates/30/slice_workflow_jobs/",
+        "copy": "/api/v2/job_templates/30/copy/"
+      },
+      "summary_fields": {
+        "organization": {
+          "id": 3,
+          "name": "ceenter",
+          "description": ""
+        },
+        "inventory": {
+          "id": 2,
+          "name": "localhost",
+          "description": "",
+          "has_active_failures": false,
+          "total_hosts": 1,
+          "hosts_with_active_failures": 0,
+          "total_groups": 0,
+          "has_inventory_sources": false,
+          "total_inventory_sources": 0,
+          "inventory_sources_with_failures": 0,
+          "organization_id": 3,
+          "kind": ""
+        },
+        "project": {
+          "id": 27,
+          "name": "Ceenter Test - jwerak",
+          "description": "Ansible Playground for Jakub",
+          "status": "successful",
+          "scm_type": "git"
+        },
+        "last_job": {
+          "id": 249,
+          "name": "VM-GCP-Create",
+          "description": "Create VM Service on GCP Platform",
+          "finished": "2021-02-19T13:52:05.229876Z",
+          "status": "successful",
+          "failed": false
+        },
+        "last_update": {
+          "id": 249,
+          "name": "VM-GCP-Create",
+          "description": "Create VM Service on GCP Platform",
+          "status": "successful",
+          "failed": false
+        },
+        "created_by": {
+          "id": 2,
+          "username": "admin",
+          "first_name": "",
+          "last_name": ""
+        },
+        "modified_by": {
+          "id": 2,
+          "username": "admin",
+          "first_name": "",
+          "last_name": ""
+        },
+        "object_roles": {
+          "admin_role": {
+            "description": "Can manage all aspects of the job template",
+            "name": "Admin",
+            "id": 166
+          },
+          "execute_role": {
+            "description": "May run the job template",
+            "name": "Execute",
+            "id": 167
+          },
+          "read_role": {
+            "description": "May view settings for the job template",
+            "name": "Read",
+            "id": 168
+          }
+        },
+        "user_capabilities": {
+          "edit": true,
+          "delete": true,
+          "start": true,
+          "schedule": true,
+          "copy": true
+        },
+        "labels": {
+          "count": 0,
+          "results": []
+        },
+        "survey": {
+          "title": "GCP VM Create",
+          "description": "Input parameters for creating VM in GCP"
+        },
+        "recent_jobs": [
+          {
+            "id": 249,
+            "status": "successful",
+            "finished": "2021-02-19T13:52:05.229876Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 206,
+            "status": "successful",
+            "finished": "2021-02-12T10:31:04.919364Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 202,
+            "status": "successful",
+            "finished": "2021-02-11T15:57:28.194529Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 196,
+            "status": "successful",
+            "finished": "2021-02-11T15:09:51.223462Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 190,
+            "status": "successful",
+            "finished": "2021-02-05T16:08:54.765077Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 188,
+            "status": "failed",
+            "finished": "2021-02-05T15:54:08.002227Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 183,
+            "status": "successful",
+            "finished": "2021-02-05T15:27:59.536056Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 177,
+            "status": "successful",
+            "finished": "2021-01-29T15:25:00.880188Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 175,
+            "status": "failed",
+            "finished": "2021-01-29T15:19:44.167048Z",
+            "canceled_on": null,
+            "type": "job"
+          },
+          {
+            "id": 167,
+            "status": "successful",
+            "finished": "2021-01-15T13:23:59.675958Z",
+            "canceled_on": null,
+            "type": "job"
+          }
+        ],
+        "credentials": [
+          {
+            "id": 4,
+            "name": "gcp-jveverka",
+            "description": "",
+            "kind": "gce",
+            "cloud": true
+          }
+        ]
+      },
+      "created": "2021-01-15T12:56:23.239868Z",
+      "modified": "2021-02-19T13:44:11.547708Z",
+      "name": "VM-GCP-Create",
+      "description": "Create VM Service on GCP Platform",
+      "job_type": "run",
+      "inventory": 2,
+      "project": 27,
+      "playbook": "Service-GCP-VM-Create.yml",
+      "scm_branch": "",
+      "forks": 0,
+      "limit": "",
+      "verbosity": 0,
+      "extra_vars": "",
+      "job_tags": "",
+      "force_handlers": false,
+      "skip_tags": "",
+      "start_at_task": "",
+      "timeout": 0,
+      "use_fact_cache": false,
+      "organization": 3,
+      "last_job_run": "2021-02-19T13:52:05.229876Z",
       "last_job_failed": false,
       "next_job_run": null,
       "status": "successful",
