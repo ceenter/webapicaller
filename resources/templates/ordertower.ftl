@@ -1,12 +1,15 @@
 <#-- @ftlvariable name="version" type="com.ceeredhat.IndexData" -->
-<#-- @ftlvariable name="formdata" type="com.ceeredhat.IndexData" -->
+<#-- @ftlvariable name="formdata" type="com.ceeredhat.FormVue" -->
 <html lang="en">
 <head>
     <title>CEEnter</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/static/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="/static/js/vue.min.js"></script>
+    <script type="text/javascript" src="/static/js/vfg-core.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/vfg-core.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/vue-form-generator.css">
 </head>
 <body>
 
@@ -30,125 +33,113 @@
     <h1>Order based on Tower templates</h1>
     <hr>
     <form action="/submit" method="post" class="form-style-6">
-    <div id="app">
-<#list formdata as item>
-    <#if item?index == 0>
-        <label>${item.label}
-            <select v-model="${item.name}" @change="clearAll">
-                <option disabled value="">Please select one</option>
-                <option v-for="option in ${item.name}_options" v-bind:value="{value: option.value, text: option.text}">
-                    {{ option.text }}
-                </option>
-            </select>
-            <span>Selected name: {{ ${item.name}.value }}</span>
-        </label>
-    <#else>
-        <#if item.type == "list">
-            <div v-if="${item.parent}.value === '${item.label}' || (${item.parent} !== '' && ${item.parent}_default === '${item.label}')">
-                <label>${item.label}
-                    <select v-model="${item.name}">
-                        <option disabled value="">Please select one</option>
-                        <option v-for="option in ${item.name}_options" v-bind:value="{value: option.value, text: option.text}">
-                            {{ option.text }}
-                        </option>
-                    </select>
-                </label>
+        <div class="container" id="app">
+            <div class="panel panel-default">
+                <div class="panel-heading">Form</div>
+                <div class="panel-body">
+                    <vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
+                    <button @click="submitClick(model)" type="button" class="panel-body"> Show JSON</button>
+                    <button @click="clearClick(model)" type="button" class="panel-body"> Clear</button>
+                </div>
             </div>
-        </#if>
-        <#if item.type == "manual">
-            <div v-if="${item.parent}.value === '${item.label}' || (${item.parent} !== '' && ${item.parent}_default === '${item.label}')">
-                <label>${item.label}
-                    <input v-model="vm_memory" v-bind:placeholder="${item.name}_text">
-                </label>
-            </div>
-        </#if>
-        <#if item.type == "auto">
-                <div v-if="${item.parent}.value === '${item.label}' || (${item.parent} !== '' && ${item.parent}_default === '${item.label}')">
-                <label>${item.label}
-                    <input v-model="${item.name}">
-                </label>
-            </div>
-        </#if>
-    </#if>
- </#list>
-        <hr>
-        <p>
-            <button @click="submitClick" type="button" class="btn btn-primary"> Show Call </button>
-            <button @click="greet" type="button" class="btn btn-primary"> API to console log </button>
-            <button @click="clearBtn" type="button" class="btn btn-primary"> Clear All </button>
-        </p>
-    </div>
+        </div>
     </form>
 
     <script type="text/javascript">
-        const app = new Vue({
-            el:'#app',
-            data: {
-                <#list formdata as item>
-                    <#if item.type == "list">
-                        <#if item?has_next>
-                            ${item.name}: '',
-                            ${item.name}_default: '${item.default}',
-                            ${item.name}_options: [ ${item.options?no_esc} ],
-                        <#else>
-                            ${item.name}: '',
-                            ${item.name}_default: '${item.default}',
-                            ${item.name}_options: [ ${item.options?no_esc} ]
-                        </#if>
-                    <#else>
-                        <#if item?has_next>
-                            ${item.name}: '',
-                            ${item.name}_text: '${item.default}',
-                            ${item.name}_default: '${item.default}',
-                        <#else>
-                            ${item.name}: '',
-                            ${item.name}_text: '${item.default}',
-                            ${item.name}_default: '${item.default}'
-                        </#if>
-                    </#if>
-                </#list>
+        const VueFormGenerator = window.VueFormGenerator;
+        const vm = new Vue({
+            el: "#app",
+            components: {
+                "vue-form-generator": VueFormGenerator.component
             },
             methods: {
-                submitClick: function(){
-                    const data = {
-                        <#list formdata as item>
-                        request_type: this.${item.name}_type.value,
-                        </#list>
+                submitClick: function(json) {
+                    if (json) {
+                        json = JSON.stringify(json, undefined, 4);
+                        alert(json);
                     }
-                    alert(JSON.stringify(data, null, 2))
                 },
-                clearAll: function() {
+                clearClick: function(model) {
                     <#list formdata as item>
-                    <#if item?index != 0>
-                    this.${item.name} = '';
+                    ${item.clearField?no_esc}
+                    </#list>
+                }
+            },
+            data: {
+                model: {
+                    <#list formdata as item>
+                    <#if item?has_next>
+                    ${item.modelName?no_esc},
+                    <#else>
+                    ${item.modelName?no_esc}
                     </#if>
                     </#list>
                 },
-                clearBtn: function() {
-                    <#list formdata as item>
-                    this.${item.name} = '';
-                    </#list>
-                },
-                greet: function(){
-                    let tmplName =
+                schema: {
+                    fields: [
                         <#list formdata as item>
                         <#if item?has_next>
-                        this.${item.name}.text + "-" +
+                        {
+                            ${item.schemaType?no_esc},
+                            ${item.schemaModel?no_esc},
+                            ${item.schemaReadonly?no_esc},
+                            ${item.schemaFeatured?no_esc},
+                            ${item.schemaRequired?no_esc},
+                            ${item.schemaDisabled?no_esc},
+                            <#if item.schemaDefault?has_content>
+                            ${item.schemaDefault?no_esc},
+                            </#if>
+                            <#if item.schemaPlaceholder?has_content>
+                            ${item.schemaPlaceholder?no_esc},
+                            </#if>
+                            <#if item.schemaValues?has_content>
+                            ${item.schemaValues?no_esc},
+                            </#if>
+                            <#if item.schemaValidator?has_content>
+                            ${item.schemaValidator?no_esc},
+                            </#if>
+                            <#if item.schemaVisible?has_content>
+                            ${item.schemaVisible?no_esc},
+                            </#if>
+                            ${item.schemaLabel?no_esc}
+                        },
                         <#else>
-                        this.${item.name}.text;
+                        {
+                            ${item.schemaType?no_esc},
+                            ${item.schemaModel?no_esc},
+                            ${item.schemaReadonly?no_esc},
+                            ${item.schemaFeatured?no_esc},
+                            ${item.schemaRequired?no_esc},
+                            ${item.schemaDisabled?no_esc},
+                            <#if item.schemaDefault?has_content>
+                            ${item.schemaDefault?no_esc},
+                            </#if>
+                            <#if item.schemaPlaceholder?has_content>
+                            ${item.schemaPlaceholder?no_esc},
+                            </#if>
+                            <#if item.schemaValues?has_content>
+                            ${item.schemaValues?no_esc},
+                            </#if>
+                            <#if item.schemaValidator?has_content>
+                            ${item.schemaValidator?no_esc},
+                            </#if>
+                            <#if item.schemaVisible?has_content>
+                            ${item.schemaVisible?no_esc},
+                            </#if>
+                            ${item.schemaLabel?no_esc}
+                        }
                         </#if>
                         </#list>
-                    console.log("Ansible Workflow Template: " + tmplName)
+                    ]
                 },
-                vm_memory_set: function(){
-                    this.vm_memory = '2';
-                    console.log("vm change..")
+                formOptions: {
+                    validateAfterLoad: true,
+                    validateAfterChanged: true
                 }
             }
         });
     </script>
 </div>
 <!-- Content END -->
-
 </body>
 </html>

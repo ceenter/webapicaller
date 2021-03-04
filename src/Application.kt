@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
 
-const val version = "0.1.3"
+const val version = "0.1.4"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -83,21 +83,30 @@ fun Application.module() {
             // call Tower
             val response =
                 sendGet(towerhost + towerworkflowtemplates, toweradm, towerpass)
-            formEntries.clear()
-            formEntries= mutableListOf(
-                FormEntry(
+            formVues.clear()
+            formVues= mutableListOf(
+                FormVue(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     "",
                     "",
                     "",
                     "",
                     "",
                     ""
-                ))
+                )
+                )
             jsonFromTower(response)
             call.respond(
                 FreeMarkerContent("ordertower.ftl", mapOf(
                     "version" to version,
-                    "formdata" to formEntries),
+                    "formdata" to formVues),
                     ""))
         }
 

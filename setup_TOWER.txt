@@ -1,15 +1,16 @@
+Examples calling
+---
 export TOWER_HOST=https://ansible-tower-web-svc-tower.ceenter-5c19b80d0b42bf06f50309d5c8a080e8-0000.eu-de.containers.appdomain.cloud
 
-curl -u admin:R3dH@t01! -X GET -H "Content-Type: application/json" -k -n ${TOWER_HOST}/api/v2/job_templates/Service-VM-GCP-Create/survey_spec/ | jq
 
-nebo
-curl -u admin:R3dH@t01! -X GET -H "Content-Type: application/json" -k -n ${TOWER_HOST}/api/v2/job_templates/30/survey_spec/ | jq
-
-admin:R3dH@t01!
-
+curl -u admin:R3dH@t01! -X GET -H "Content-Type: application/json" -k -n ${TOWER_HOST}/api/v2/job_templates/Service-VM-GCP-Create/templateSurvey_spec/ | jq
+curl -u admin:R3dH@t01! -X GET -H "Content-Type: application/json" -k -n ${TOWER_HOST}/api/v2/job_templates/30/templateSurvey_spec/ | jq
 curl -u admin:R3dH@t01! -X GET -H "Content-Type: application/json" -k -n ${TOWER_HOST}/api/v2/job_templates/ | jq
 
 
 
-Spusteni sluzby
+
+
+Launch Service
+---
 curl -k --user admin:PASSWORD ${TOWER_HOST}/api/v2/job_templates/Service-VM-GCP-Create/launch/ -X POST -i
