@@ -177,8 +177,9 @@ fun jsonFromTower(myJson: String) {
             schemaVisible = "visible: (model) => model.template_name === '${surveyName.split(":")[0]}'"
             schemaValues = ""
             if (it.choices == "") {
-                clearField = "this.model.question_name$x$y = \"\";"
-                modelName = "question_name$x$y: \"\""
+                clearField = if (it.default != "") "this.model.question_name$x$y = \"${it.default}\";" else "this.model" +
+                        ".question_name$x$y = \"\";"
+                modelName = if (it.default != "") "question_name$x$y: \"${it.default}\"" else "question_name$x$y: \"\""
                 if (it.type == "integer") {
                     schemaType = "type: \"input\", inputType: \"number\""
                     schemaValidator = "validator: VueFormGenerator.validators.number"
