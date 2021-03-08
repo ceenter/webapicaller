@@ -5,8 +5,8 @@
     <title>CEEnter</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <script type="text/javascript" src="/static/js/vue.min.js"></script>
+    <#--<script type="text/javascript" src="/static/js/vue.min.js"></script>-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="text/javascript" src="/static/js/vfg-core.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/vfg-core.css">
     <link rel="stylesheet" type="text/css" href="/static/css/vue-form-generator.css">
@@ -29,29 +29,32 @@
 <!-- Navigation bar END -->
 
 <!-- Content START -->
-<div class="content">
+<div class="content" style="float: left;">
     <h1>Order based on Tower templates</h1>
     <hr>
     <div class="row">
-        <div class="container" id="app">
-            <div class="column">
+        <div class="container" id="app" style="float: left;">
+            <div class="column" style="width: 400px">
                 <div class="panel panel-default">
                     <div class="panel-heading">Form</div>
                     <div class="panel-body">
                         <vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
-                        <button @click="APIcommandClick" type="button" class="panel-body"> Generate API Command</button>
-                        <button @click="APIexecuteClick" type="button" class="panel-body"> Execute</button>
-                        <button @click="clearClick(model)" type="button" class="panel-body"> Clear</button>
+                        <button @click="APIcommandClick(model)" type="button" class="form-style-6">
+                            Generate API Command</button>
+                        <button @click="APIexecuteClick(model)" type="button" class="form-style-6">
+                            Execute</button>
+                        <button @click="clearClick" type="button" class="form-style-6">
+                            Clear</button>
                     </div>
                 </div>
             </div>
-            <div class="column">
+            <div class="column" style="width: 700px">
                 <div class="panel">
-                    <h2 class="panel-body">API Command</h2>
+                    <div class="panel-heading">API Command</div>
                     <p v-html="APIcommand" class="panel-body"></p>
                 </div>
                 <div class="panel">
-                    <h2 class="panel-body">API Output</h2>
+                    <div class="panel-heading">API Output</div>
                     <p v-html="APIoutput" class="panel-body"></p>
                 </div>
             </div>
@@ -66,16 +69,34 @@
                 "vue-form-generator": VueFormGenerator.component
             },
             methods: {
-                APIcommandClick: function () {
-                    this.APIcommand = "curl -f -k -H 'Content-Type: application/json' -H 'Authorization:Basic ";
+                APIcommandClick: async function (json) {
+                    json = JSON.stringify(json, undefined, 4);
+                    let response1 = await fetch('/apicommand', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/text'
+                        },
+                        body: json
+                    });
+                    this.APIcommand = await response1.text();
                 },
-                APIexecuteClick: function () {
-                    this.APIoutput = "############ Workflow Name: Test-Workflow, Status: successful ##################";
+                APIexecuteClick: async function (json) {
+                    json = JSON.stringify(json, undefined, 4);
+                    let response2 = await fetch('/apicexecute', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/text'
+                        },
+                        body: json
+                    });
+                    this.APIoutput = await response2.text();
                 },
-                clearClick: function (model) {
+                clearClick: function () {
                     <#list formdata as item>
                     ${item.clearField?no_esc}
                     </#list>
+                    this.APIcommand ="...";
+                    this.APIoutput = "...";
                 }
             },
             data: {

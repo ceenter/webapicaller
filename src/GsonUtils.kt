@@ -2,8 +2,16 @@ package com.ceeredhat
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import okhttp3.Credentials
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
 import templateSurvey_spec.Survey_spec
 import templateWorkflowTower.TowerWorkflow
+import java.io.IOException
 
 
 /**
@@ -147,15 +155,15 @@ fun jsonFromTower(myJson: String) {
     val surveySpec = arrayListOf<String>()
     for (aIndex in 0 until mTower.results.count()) {
         if (mTower.results[aIndex].description != "") {
-            surveySpec.add(mTower.results[aIndex].name + ":" + mTower.results[aIndex].related.survey_spec)
+            surveySpec.add(mTower.results[aIndex].id.toString() + ":" + mTower.results[aIndex].related.survey_spec)
             //println(mTower.results[aIndex].description)
             schemaValues += if (schemaValues == "")
                 "values: function() {\n" +
                         "                        return [" +
-                "{ id: \"${mTower.results[aIndex].name}\", " +
+                        "{ id: \"${mTower.results[aIndex].id}\", " +
                         "name: \"${mTower.results[aIndex].description}\" }"
             else
-                ", { id: \"${mTower.results[aIndex].name}\", " +
+                ", { id: \"${mTower.results[aIndex].id}\", " +
                         "name: \"${mTower.results[aIndex].description}\" }"
         }
     }
@@ -167,47 +175,158 @@ fun jsonFromTower(myJson: String) {
     )
     formVues[0] = newEntry
     // adding survey to Form
-    surveySpec.forEachIndexed { x, surveyName ->
+    surveySpec.forEach { surveyName ->
         val surveyJson = sendGet(towerhost + surveyName.split(":")[1], toweradm, towerpass)
-         //surveyName.split(":")[0]
+        //surveyName.split(":")[0]
         val mSurvey = gson.fromJson(surveyJson, Survey_spec::class.java)
-        mSurvey.spec.forEachIndexed { y, it ->
+        mSurvey.spec.forEach {
             schemaDefault = ""
             schemaPlaceholder = ""
             schemaVisible = "visible: (model) => model.template_name === '${surveyName.split(":")[0]}'"
             schemaValues = ""
             if (it.choices == "") {
-                clearField = if (it.default != "") "this.model.question_name$x$y = \"${it.default}\";" else "this.model" +
-                        ".question_name$x$y = \"\";"
-                modelName = if (it.default != "") "question_name$x$y: \"${it.default}\"" else "question_name$x$y: \"\""
+                // test if it is a number
+                if (it.default.toString().toDoubleOrNull() != null) {
+                    val fieldInt = (it.default as Double).toInt()
+                    clearField = "this.model.${it.variable}${surveyName.split(":")[0]} = \"$fieldInt\";"
+                    modelName = "${it.variable}${surveyName.split(":")[0]}: \"$fieldInt\""
+                } else {
+                    clearField =
+                        if (it.default != "") "this.model.${it.variable}${surveyName.split(":")[0]} = \"${it.default}\";"
+                        else "this.model.${it.variable}${surveyName.split(":")[0]} = \"\";"
+                    modelName = if (it.default != "") "${it.variable}${surveyName.split(":")[0]}: \"${it.default}\""
+                    else "${it.variable}${surveyName.split(":")[0]}: \"\""
+                }
                 if (it.type == "integer") {
                     schemaType = "type: \"input\", inputType: \"number\""
                     schemaValidator = "validator: VueFormGenerator.validators.number"
-                }
-                else {
+                } else {
                     schemaType = "type: \"input\", inputType: \"text\""
                     schemaValidator = "validator: VueFormGenerator.validators.string"
                 }
-            }
-            else {
-                clearField = "this.model.question_name$x$y = [];"
-                modelName = "question_name$x$y: []"
+            } else {
+                clearField = "this.model.${it.variable}${surveyName.split(":")[0]} = [];"
+                modelName = "${it.variable}${surveyName.split(":")[0]}: []"
                 schemaType = "type: \"select\""
                 schemaValues = "values: " +
-                    it.choices.split("\n").joinToString(prefix = "[\"", postfix = "\"]", separator = "\",\"")
+                        it.choices.split("\n").joinToString(prefix = "[\"", postfix = "\"]", separator = "\",\"")
                 schemaValidator = ""
             }
             schemaLabel = "label: \"${it.question_name}\""
-            schemaModel = "model: \"question_name$x$y\""
+            schemaModel = "model: \"${it.variable}${surveyName.split(":")[0]}\""
             schemaReadonly = "readonly: false"
             schemaFeatured = "featured: false"
             schemaRequired = "required: ${it.required}"
             schemaDisabled = "disabled: false"
             newEntry = FormVue(
-                clearField, modelName, schemaType, schemaLabel, schemaModel, schemaReadonly, schemaFeatured,
-                schemaRequired, schemaDisabled, schemaDefault, schemaPlaceholder, schemaValidator, schemaVisible, schemaValues
+                clearField,
+                modelName,
+                schemaType,
+                schemaLabel,
+                schemaModel,
+                schemaReadonly,
+                schemaFeatured,
+                schemaRequired,
+                schemaDisabled,
+                schemaDefault,
+                schemaPlaceholder,
+                schemaValidator,
+                schemaVisible,
+                schemaValues
             )
             formVues.add(newEntry)
         }
     }
+}
+
+/**
+ * Create API call from JSON string sending by FORM.
+ *
+ * @jsonStr Input JSON as string.
+ */
+fun jsonCommandAPI(jsonStr: String): String {
+    val (templateName, extraVars) = generateAPIvalues(jsonStr)
+    return "curl -f -k -H 'Content-Type: application/json' -H 'Authorization:Basic '$toweradm:$towerpass' -d " +
+            "'{\"extra_vars\":{$extraVars}}' $towerhost/api/v2/workflow_job_templates/$templateName/launch/"
+}
+
+/**
+ * Create API values
+ *  return pair: template_name, extra_vars
+ *
+ * @jsonStr Input JSON as string.
+ */
+fun generateAPIvalues(jsonStr: String): Pair<String, String> {
+    val gson = Gson() // Creates new instance of Gson
+    val element = gson.fromJson(jsonStr, JsonElement::class.java) //Converts the json string to JsonElement without POJO
+    var extravars = ""
+    val jsonObj = element.asJsonObject //Converting JsonElement to JsonObject
+    var templateName = "" // template name should be filled in as first!!!
+    for (aIndex in 0 until jsonObj.size()) {
+        if (jsonObj.entrySet().elementAt(aIndex).key.toString() == "template_name")
+            templateName = jsonObj.entrySet().elementAt(aIndex).value.toString().replace("\"", "")
+        // find key for according element -> it composing like name+template_name
+        val elementName = jsonObj.entrySet().elementAt(aIndex).key.toString()
+        var elementValue = jsonObj.entrySet().elementAt(aIndex).value.toString()
+        // if elementValue is number then remove double quotas
+        if (elementValue.replace("\"", "").toDoubleOrNull() != null)
+            elementValue = elementValue.replace("\"", "")
+        if (elementName.contains(templateName))
+            if (extravars == "")
+            // the reason plus 2 is here because key value is with two chars of double quotas
+                extravars = "\"" + elementName.substring(
+                    0,
+                    elementName.length - templateName.length
+                ) + "\"" + ":" + elementValue
+            else
+                extravars += ",\"" + elementName.substring(
+                    0,
+                    elementName.length - templateName.length
+                ) + "\"" + ":" + elementValue
+    }
+    return Pair(templateName.replace("\"", ""),extravars)
+}
+
+/**
+ * Create API execute from JSON string sending by FORM.
+ * HTTP POST to send a request body to a service.
+ *
+ * @jsonStr Input JSON as string.
+ */
+fun jsonExecuteAPI(jsonStr: String): String {
+    val (templateName, extraVars) = generateAPIvalues(jsonStr)
+    val client = OkHttpClient.Builder()
+        .authenticator(object : Authenticator {
+            @Throws(IOException::class)
+            override fun authenticate(route: Route?, response: Response): Request? {
+                if (response.request.header("Authorization") != null) {
+                    return null // Give up, we've already attempted to authenticate.
+                }
+
+                println("Authenticating for response: $response")
+                println("Challenges: ${response.challenges()}")
+                val credential = Credentials.basic(toweradm, towerpass)
+                return response.request.newBuilder()
+                    .header("Authorization", credential)
+                    .build()
+            }
+        })
+        .build()
+
+    val json = "{\"extra_vars\":{$extraVars}}"
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = json.toRequestBody(mediaType)
+    val url = "$towerhost/api/v2/workflow_job_templates/$templateName/launch/"
+
+    val request = Request.Builder()
+        .url(url)
+        .post(body)
+        .build()
+
+    val response = client.newCall(request).execute()
+
+    //Response
+    //println("Response Body: $responseBody")
+
+    return response.body!!.string()
 }

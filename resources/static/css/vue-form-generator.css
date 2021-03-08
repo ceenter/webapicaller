@@ -1,3 +1,71 @@
+body {
+    margin: 0;
+    font-family: "Lato", sans-serif;
+}
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 240px;
+    background-color: #292929;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidebar a {
+    display: block;
+    color: #d2d2d2;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.sidebar a.active {
+    background-color: #404040;
+    border-left: 5px solid #008dea;
+    color: white;
+}
+
+.sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+div.content {
+    float: left;
+    margin-left: 240px;
+    padding: 1px 16px;
+}
+
+@media screen and (max-width: 700px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+    .sidebar a {
+        text-align: center;
+        float: none;
+    }
+}
+.header_image {
+    position: relative;
+}
+.header_image img {
+    max-width: 15%;
+    display:inline-block;
+    vertical-align:middle;
+}
+.header_image h2 {
+    display:inline-block;
+    max-width:80%;
+
+}
+
 pre {
     overflow: auto;
 }
@@ -23,7 +91,7 @@ pre .key {
 }
 
 .container {
-    max-width: 970px;
+    max-width: 1200px;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
@@ -59,6 +127,24 @@ fieldset {
     padding: 15px;
 }
 
+.form-style-6 input[type="button"]{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    padding: 2%;
+    background: #007ccd;
+    border-bottom: 2px solid #007ccd;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+    color: #fff;
+}
+.form-style-6 input[type="submit"]:hover,
+.form-style-6 input[type="button"]:hover{
+    background: #0066a5;
+}
+
 /* ----------------------- Two Column Layout */
 * {
     box-sizing: border-box;
@@ -67,8 +153,8 @@ fieldset {
 /* Create two equal columns that floats next to each other */
 .column {
     float: left;
-    width: 50%;
-    padding: 10px;
+    padding: 5px;
+    word-wrap: break-word;
 }
 
 /* Clear floats after the columns */
@@ -76,4 +162,5 @@ fieldset {
     content: "";
     display: table;
     clear: both;
+    width: 1200px;
 }

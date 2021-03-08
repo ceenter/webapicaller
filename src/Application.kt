@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
 
-const val version = "0.1.6"
+const val version = "0.1.8"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -162,7 +162,16 @@ fun Application.module() {
         get("/json/jackson") {
             call.respond(mapOf("hello" to "world"))
         }
-
+//-------------------------------------------------------------------------------------------------- POST /apicommand
+        post("/apicommand") {
+            val params = call.receiveText()
+            call.respond(jsonCommandAPI(params))
+        }
+//-------------------------------------------------------------------------------------------------- POST /apicexecute
+        post("/apicexecute") {
+            val params = call.receiveText()
+            call.respond(jsonExecuteAPI(params))
+        }
 //---------------------------------------------------------------------------------------------------- POST /savesetting
         post("/savesetting") {
             val params = call.receiveParameters()
